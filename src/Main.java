@@ -9,8 +9,17 @@ import UTILIS.Validaciones;
 public class Main {
     static Scanner sc = new Scanner(System.in);
     static UsuarioDAO dao = new UsuarioDAO();
-
+    //esto es una idea, nose lo puedes quitar
     public static void main(String[] args) {
+        int opcionPrincipal = -1;
+        System.out.println("\n====================================");
+        System.out.println("        MENÚ PRINCIPAL (DAO)");
+        System.out.println("====================================");
+        System.out.println("1. Gestión de Usuarios");
+        System.out.println("2. Gestión de Tarjetas");
+        System.out.println("3. Salir");
+        System.out.print("Seleccione una opción: ");
+        //opciones
         int opcion=0;
         do {
             menu();
@@ -254,6 +263,21 @@ public class Main {
             System.out.println("No fue posible eliminar al usuario.");
         }
     }
+    public static void menuTarjetas() {
+            System.out.println("\n------------------------------------");
+            System.out.println("      SUBMENÚ: GESTIÓN DE TARJETAS");
+            System.out.println("------------------------------------");
+            System.out.println("1. Registrar Tarjeta (Asociar a un ID)");
+            System.out.println("2. Consultar Tarjeta por Número/CLABE");
+            System.out.println("3. Mostrar Tarjetas de un Usuario");
+            System.out.println("4. Activar/Desactivar una Tarjeta");
+            System.out.println("5. Eliminar Tarjeta");
+            System.out.println("6. Volver al Menú Principal");
+            System.out.print("Seleccione una opción: ");
+
+
+    }
+
     public static void registrarTarjeta() {
         //relacion usuario tarjetas
         TarjetaDAO tarjetaDao = new TarjetaDAO();

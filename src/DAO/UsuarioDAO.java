@@ -102,6 +102,44 @@ public class UsuarioDAO implements InterUsuarioDAO {
     }
 
     @Override
+    public boolean editar(Usuario usuario) {
+
+        try {
+            Connection con = Conexion.conectar();
+
+            String sql = """
+                UPDATE usuarios
+                SET nombre = ?,
+                    apellido_p = ?,
+                    apellido_m = ?,
+                    edad = ?,
+                    activo = ?
+                WHERE id_user = ?
+                """;
+
+            PreparedStatement ps = con.prepareStatement(sql);
+
+            ps.setString(1, usuario.getNombre());
+            ps.setString(2, usuario.getApellido_p());
+            ps.setString(3, usuario.getApellido_m());
+            ps.setInt(4, usuario.getEdad());
+            ps.setBoolean(5, usuario.isActivo());
+            ps.setInt(6, usuario.getId());
+
+            ps.executeUpdate();
+
+            ps.close();
+            con.close();
+
+            return true;
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getLocalizedMessage());
+            return false;
+        }
+    }
+
+    @Override
     public boolean eliminar(int id) {
         try {
             Connection con = Conexion.conectar();

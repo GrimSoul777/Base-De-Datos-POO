@@ -1,5 +1,7 @@
 package MODELS;
 
+import java.util.Random;
+
 public class Tarjeta {
     private int id;
     private String clabe;
@@ -11,37 +13,25 @@ public class Tarjeta {
     private double credito;
     private boolean activo;
     private int id_user;
+    private String fecha_exp;
+
+    Random random = new Random();
 
     public Tarjeta() {}
 
-    public Tarjeta(int id, String clabe, String numero, int mes_exp, int año_exp, double saldo, String tipo, double credito, boolean activo, int id_user) {
+    public Tarjeta(int id, String clabe, String numero, int mes_exp, int año_exp, double saldo, String tipo, double credito, boolean activo, int id_user,  String fecha_exp) {
         this.id = id;
-        this.clabe = clabe;
-        this.numero = numero;
-        this.mes_exp = mes_exp;
-        this.año_exp = año_exp;
         this.saldo = saldo;
         this.tipo = tipo;
         this.credito = credito;
-        this.activo = activo;
         this.id_user = id_user;
+        this.fecha_exp = fecha_exp;
 
-        java.util.Random rand = new java.util.Random();
-        //mes de expiracion
-        //año de expiracion
-        //numero de tarjeta
-        StringBuilder sbNumero = new StringBuilder();
-        sbNumero.append(rand.nextBoolean() ? "4" : "5");
-        for (int i = 0; i < 15; i++) {
-            sbNumero.append(rand.nextInt(10));
-        }
-        this.numero = sbNumero.toString();
-        //clave
-        StringBuilder sbClabe = new StringBuilder();
-        for (int i = 0; i < 18; i++) {
-            sbClabe.append(rand.nextInt(10));
-        }
-        this.clabe = sbClabe.toString();
+        this.clabe = generarCLABE();
+        this.numero = generarNumero();
+        this.mes_exp = generarMes();
+        this.año_exp = generarAño();
+        this.activo = true;
     }
 
     public int getId() {
@@ -120,5 +110,39 @@ public class Tarjeta {
 
     public void setId_user(int id_user) {
         this.id_user = id_user;
+    }
+
+    public String getFecha_exp() {
+        return fecha_exp;
+    }
+
+    public void setFecha_exp(String fecha_exp) {
+        this.fecha_exp = fecha_exp;
+    }
+
+    private String generarNumero() {
+        String numero = "";
+        for(int i = 0; i < 16; i++){
+            numero += random.nextInt(10);
+        }
+        return numero;
+    }
+
+    private String generarCLABE(){
+        String clabe="";
+        for(int i=0;i<18;i++){
+            clabe+=random.nextInt(10);
+        }
+        return clabe;
+    }
+
+    private int generarMes(){
+        int mes = random.nextInt(12)+1;
+        return mes;
+    }
+
+    private int generarAño(){
+        int año = random.nextInt(6)+2026;
+        return año;
     }
 }

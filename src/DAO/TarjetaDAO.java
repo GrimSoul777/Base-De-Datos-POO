@@ -41,12 +41,13 @@ public class TarjetaDAO implements InterTarjetaDAO {
     }
 
     @Override
-    public ArrayList<Tarjeta> listar() {
+    public ArrayList<Tarjeta> listar(int idUser) {
         ArrayList<Tarjeta> lista = new ArrayList<>();
         try {
             Connection con = Conexion.conectar();
-            String sql = "SELECT * FROM tarjetas ORDER BY id_tarjeta";
+            String sql = "SELECT * FROM tarjetas WHERE id_user = ? ORDER BY id_tarjeta";
             PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, idUser);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -59,7 +60,7 @@ public class TarjetaDAO implements InterTarjetaDAO {
                 tarjeta.setSaldo(rs.getDouble("saldo"));
                 tarjeta.setTipo(rs.getString("tipo"));
                 tarjeta.setCredito(rs.getDouble("credito"));
-                tarjeta.setActivo(rs.getBoolean("activa"));
+                tarjeta.setActivo(rs.getBoolean("activo"));
                 tarjeta.setId_user(rs.getInt("id_user"));
 
                 lista.add(tarjeta);
@@ -77,7 +78,7 @@ public class TarjetaDAO implements InterTarjetaDAO {
 
         try {
             Connection con = Conexion.conectar();
-            String sql = "SELECT * FROM tarjetas WHERE numero = ?";
+            String sql = "SELECT * FROM tarjetas WHERE id_tarjeta = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
@@ -118,6 +119,26 @@ public class TarjetaDAO implements InterTarjetaDAO {
             System.out.println("Error: " + e.getLocalizedMessage());
             return false;
         }
+    }
+
+    public boolean tieneTarjetas(int idUser) {
+        try {
+            Connection con = Conexion.conectar();
+            String sql = "SELECT COUNT(*) FROM tarjetas WHERE id_user = ?";
+
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, idUser);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+            con.close();
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getLocalizedMessage());
+        }
+        return false;
     }
 
 }

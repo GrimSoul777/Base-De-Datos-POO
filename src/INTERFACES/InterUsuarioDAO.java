@@ -10,7 +10,7 @@ public interface InterUsuarioDAO {
 
     public Usuario buscar(int id);
 
-    //public boolean editar(Usuario usuario);
+    public boolean editar(Usuario usuario);
 
     public boolean eliminar(int id);
 

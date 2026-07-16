@@ -25,6 +25,23 @@ public class Tarjeta {
         this.credito = credito;
         this.activo = activo;
         this.id_user = id_user;
+
+        java.util.Random rand = new java.util.Random();
+        //mes de expiracion
+        //año de expiracion
+        //numero de tarjeta
+        StringBuilder sbNumero = new StringBuilder();
+        sbNumero.append(rand.nextBoolean() ? "4" : "5");
+        for (int i = 0; i < 15; i++) {
+            sbNumero.append(rand.nextInt(10));
+        }
+        this.numero = sbNumero.toString();
+        //clave
+        StringBuilder sbClabe = new StringBuilder();
+        for (int i = 0; i < 18; i++) {
+            sbClabe.append(rand.nextInt(10));
+        }
+        this.clabe = sbClabe.toString();
     }
 
     public int getId() {

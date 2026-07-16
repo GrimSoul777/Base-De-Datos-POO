@@ -3,6 +3,7 @@ import java.util.Scanner;
 import MODELS.Usuario;
 import MODELS.Tarjeta;
 import DAO.UsuarioDAO;
+import DAO.TarjetaDAO;
 import UTILIS.Validaciones;
 
 public class Main {
@@ -252,5 +253,33 @@ public class Main {
         else {
             System.out.println("No fue posible eliminar al usuario.");
         }
+    }
+    public static void registrarTarjeta() {
+        //relacion usuario tarjetas
+        TarjetaDAO tarjetaDao = new TarjetaDAO();
+        Tarjeta tarjeta = new Tarjeta();
+        // Tipo de tarjeta
+        System.out.print("Tipo de tarjeta (D = Débito, C = Crédito): ");
+        String tipo = sc.nextLine().toUpperCase();
+        double saldo = 0;
+        double credito = 0;
+        try {
+            if (tipo.equals("D")) {
+                System.out.print("Saldo inicial: ");
+                saldo = Double.parseDouble(sc.nextLine());
+            } else if (tipo.equals("C")) {
+                System.out.print("Límite de crédito: ");
+                credito = Double.parseDouble(sc.nextLine());
+            } else {
+                System.out.println("Tipo inválido.");
+                return;
+            }
+        } catch (Exception e) {
+            System.out.println("Número inválido.");
+            return;
+        }
+        tarjeta.setTipo(tipo);
+        tarjeta.setSaldo(saldo);
+        tarjeta.setCredito(credito);
     }
 }

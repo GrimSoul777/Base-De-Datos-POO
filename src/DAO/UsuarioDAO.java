@@ -16,18 +16,17 @@ public class UsuarioDAO implements InterUsuarioDAO {
         try {
             Connection con = Conexion.conectar();
             String sql = "INSERT INTO usuarios "
-                    + "(id_user,nombre,apellido_p,apellido_m,edad,email,contra,activo) "
-                    + "VALUES(?,?,?,?,?,?,?,?)";
+                    + "(nombre,apellido_p,apellido_m,edad,email,contra,activo) "
+                    + "VALUES(?,?,?,?,?,?,?)";
 
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, usuario.getId());
-            ps.setString(2, usuario.getNombre());
-            ps.setString(3, usuario.getApellido_p());
-            ps.setString(4, usuario.getApellido_m());
-            ps.setInt(5, usuario.getEdad());
-            ps.setString(6, usuario.getEmail());
-            ps.setString(7, usuario.getContra());
-            ps.setBoolean(8, usuario.isActivo());
+            ps.setString(1, usuario.getNombre());
+            ps.setString(2, usuario.getApellido_p());
+            ps.setString(3, usuario.getApellido_m());
+            ps.setInt(4, usuario.getEdad());
+            ps.setString(5, usuario.getEmail());
+            ps.setString(6, usuario.getContra());
+            ps.setBoolean(7, usuario.isActivo());
             ps.execute();
             con.close();
 
@@ -52,7 +51,7 @@ public class UsuarioDAO implements InterUsuarioDAO {
             while(rs.next()){
                 Usuario usuario = new Usuario();
 
-                usuario.setId(rs.getInt("id"));
+                usuario.setId(rs.getInt("id_user"));
                 usuario.setNombre(rs.getString("nombre"));
                 usuario.setApellido_p(rs.getString("apellido_p"));
                 usuario.setApellido_m(rs.getString("apellido_m"));
@@ -85,7 +84,7 @@ public class UsuarioDAO implements InterUsuarioDAO {
 
                 usuario = new Usuario();
 
-                usuario.setId(rs.getInt("id"));
+                usuario.setId(rs.getInt("id_user"));
                 usuario.setNombre(rs.getString("nombre"));
                 usuario.setApellido_p(rs.getString("apellido_p"));
                 usuario.setApellido_m(rs.getString("apellido_m"));

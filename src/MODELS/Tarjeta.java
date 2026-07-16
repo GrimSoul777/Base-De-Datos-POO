@@ -10,10 +10,11 @@ public class Tarjeta {
     private String tipo;
     private double credito;
     private boolean activo;
+    private int id_user;
 
     public Tarjeta() {}
 
-    public Tarjeta(int id, String clabe, String numero, int mes_exp, int año_exp, double saldo, String tipo, double credito, boolean activo) {
+    public Tarjeta(int id, String clabe, String numero, int mes_exp, int año_exp, double saldo, String tipo, double credito, boolean activo, int id_user) {
         this.id = id;
         this.clabe = clabe;
         this.numero = numero;
@@ -23,6 +24,7 @@ public class Tarjeta {
         this.tipo = tipo;
         this.credito = credito;
         this.activo = activo;
+        this.id_user = id_user;
     }
 
     public int getId() {
@@ -95,5 +97,11 @@ public class Tarjeta {
 
     public void setActivo(boolean activo) {
         this.activo = activo;
+    }
+
+    public int getId_user() {return id_user;}
+
+    public void setId_user(int id_user) {
+        this.id_user = id_user;
     }
 }

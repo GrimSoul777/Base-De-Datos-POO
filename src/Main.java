@@ -140,7 +140,8 @@ public class Main {
                 contador++;
             }
         }
-        if (contador == 3) {
+        //NUNCA SE IMPRIME ESTE MENSAJE
+        if (contador == 2) {
             System.out.println("LIMITE DE INTENTOS ALCANZADO");
             System.out.println("REGRESANDO AL MENU PRINCIPAL");
         }
@@ -277,7 +278,7 @@ public class Main {
             if (Validaciones.estaVacio(email)) {
                 System.out.println("El email solo puede quedar vacio");
             }
-        } while (!Validaciones.estaVacio(email));
+        } while (Validaciones.estaVacio(email));
 
         String password;
         do{
@@ -286,7 +287,7 @@ public class Main {
             if (Validaciones.estaVacio(password)) {
                 System.out.println("La contraseña no puede estar vacia");
             }
-        } while (!Validaciones.estaVacio(password));
+        } while (Validaciones.estaVacio(password));
 
         usuario.setNombre(nombre);
         usuario.setApellido_p(apellido_p);
@@ -439,6 +440,8 @@ public class Main {
     }
 
     public static void registrarTarjeta(Usuario usuario) {
+        //Error: Cannot insert the value NULL into column 'clabe', table 'Tarjetas_POO.dbo.tarjetas'; column does not allow nulls. INSERT fails.
+        //No se pudo registrar la tarjeta.
         Tarjeta tarjeta = new Tarjeta();
 
         System.out.print("Tipo de tarjeta (D/C): ");
@@ -452,13 +455,15 @@ public class Main {
         tarjeta.setTipo(tipo);
         try {
             if (tipo.equals("D")) {
-                System.out.print("Saldo inicial: ");
-                tarjeta.setSaldo(Double.parseDouble(sc.nextLine()));
+                //System.out.print("Saldo inicial: ");
+                //tarjeta.setSaldo(Double.parseDouble(sc.nextLine()));
                 tarjeta.setCredito(0);
-            } else {
-                System.out.print("Límite de crédito: ");
-                tarjeta.setCredito(Double.parseDouble(sc.nextLine()));
                 tarjeta.setSaldo(0);
+            } else {
+                //System.out.print("Límite de crédito: ");
+                //tarjeta.setCredito(Double.parseDouble(sc.nextLine()));
+                tarjeta.setSaldo(0);
+                tarjeta.setCredito(15000.0);
             }
             tarjeta.setId_user(usuario.getId());
 
@@ -474,6 +479,15 @@ public class Main {
     }
 
     public static void buscarTarjeta(Usuario usuario) {
+        //LUEGO CHECAR ESTO PARA K SI NO HAY TARJETAS K TE REGRESE AL MENU DE INMEDIATO EN BUSCAR Y ELIMINAR
+        /*ArrayList<Tarjeta> lista = daot.listar(idUser);
+
+        if (lista.isEmpty()) {
+            System.out.println("\nNo hay tarjetas registradas");
+            return;
+        }
+         */
+
         mostrarTarjetas(usuario.getId());
 
         System.out.print("\nIngrese el ID de la tarjeta: ");

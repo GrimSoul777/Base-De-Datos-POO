@@ -51,7 +51,7 @@ public class TarjetaDAO implements InterTarjetaDAO {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                Tarjeta tarjeta = new Tarjeta();
+                Tarjeta tarjeta = new Tarjeta(0, null, null, 0, 0, 0, null , 0 ,true, 0, null);
                 tarjeta.setId(rs.getInt("id_tarjeta"));
                 tarjeta.setClabe(rs.getString("clabe"));
                 tarjeta.setNumero(rs.getString("numero"));
@@ -84,7 +84,7 @@ public class TarjetaDAO implements InterTarjetaDAO {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                tarjeta = new Tarjeta();
+                tarjeta = new Tarjeta(0, null, null, 0, 0, 0, null , 0 ,true, 0, null);
                 tarjeta.setId(rs.getInt("id_tarjeta"));
                 tarjeta.setClabe(rs.getString("clabe"));
                 tarjeta.setNumero(rs.getString("numero"));
@@ -141,4 +141,20 @@ public class TarjetaDAO implements InterTarjetaDAO {
         return false;
     }
 
+    public boolean actualizarEstado(Tarjeta tarjeta){
+        try {
+            Connection con = Conexion.conectar();
+            String sql = "UPDATE tarjetas SET activo = ? WHERE id = ?";
+
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setBoolean(1, tarjeta.isActivo());
+            ps.setInt(2, tarjeta.getId());
+
+            return ps.executeUpdate() > 0;
+
+        } catch(Exception e){
+            System.out.println(e.getLocalizedMessage());
+            return false;
+        }
+    }
 }

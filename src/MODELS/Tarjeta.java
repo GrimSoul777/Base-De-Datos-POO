@@ -17,8 +17,6 @@ public class Tarjeta {
 
     Random random = new Random();
 
-    public Tarjeta() {}
-
     public Tarjeta(int id, String clabe, String numero, int mes_exp, int año_exp, double saldo, String tipo, double credito, boolean activo, int id_user,  String fecha_exp) {
         this.id = id;
         this.saldo = saldo;

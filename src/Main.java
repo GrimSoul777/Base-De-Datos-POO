@@ -141,7 +141,8 @@ public class Main {
             }
         }
         //NUNCA SE IMPRIME ESTE MENSAJE
-        if (contador == 2) {
+        //YA SE IMPRIME JEJEJ CREO
+        if (contador == 4) {
             System.out.println("LIMITE DE INTENTOS ALCANZADO");
             System.out.println("REGRESANDO AL MENU PRINCIPAL");
         }
@@ -159,8 +160,9 @@ public class Main {
                 System.out.println("1. Ver tarjetas");
                 System.out.println("2. Agregar tarjeta");
                 System.out.println("3. Buscar tarjeta");
-                System.out.println("4. Eliminar tarjeta");
-                System.out.println("5. Regresar");
+                System.out.println("4. Desactivar/Activar tarjeta");
+                System.out.println("5. Eliminar tarjeta");
+                System.out.println("6. Regresar");
                 System.out.println("Ingrese su opcion:");
                 int opcion = Integer.parseInt(sc.nextLine());
                 switch (opcion) {
@@ -174,9 +176,12 @@ public class Main {
                         buscarTarjeta(usuario);
                         break;
                     case 4:
-                        eliminarTarjeta(usuario);
+                        editarTarjeta(usuario);
                         break;
                     case 5:
+                        eliminarTarjeta(usuario);
+                        break;
+                    case 6:
                         System.out.println("Regresando...");
                         seguir = false;
                         break;
@@ -275,10 +280,10 @@ public class Main {
         do{
             System.out.println("Ingrese el email del usuario: ");
             email = sc.nextLine();
-            if (Validaciones.estaVacio(email)) {
-                System.out.println("El email solo puede quedar vacio");
+            if (!Validaciones.correoValido(email)) {
+                System.out.println("Email invalido");
             }
-        } while (Validaciones.estaVacio(email));
+        } while (!Validaciones.correoValido(email));
 
         String password;
         do{
@@ -312,13 +317,28 @@ public class Main {
             System.out.println("\nNo hay usuarios registrados.");
             return;
         }
-
+        //MOSTRAR INFO REDUCIDA DE LOS USUARIOS QUE HAY
+        System.out.println();
+        System.out.printf("%-5s %-25s %-35s %-10s%n",
+                "ID",
+                "NOMBRE",
+                "APELLIDO PATERNO",
+                "ACTIVO");
+        System.out.println("---------------------------------------------------------------------------------------------");
+        for (Usuario usuario : lista) {
+            System.out.printf("%-5d %-25s %-35s %-10s%n",
+                    usuario.getId(),
+                    usuario.getNombre(),
+                    usuario.getApellido_p(),
+                    usuario.isActivo() ? "SI" : "NO");
+        }
+        System.out.println();
         int id = 0;
         boolean correcto = false;
 
         while (!correcto) {
             try {
-                System.out.print("Ingrese el ID del usuario: ");
+                System.out.print("Ingrese el ID del usuario a buscar: ");
                 id = Integer.parseInt(sc.nextLine());
                 correcto = true;
             }
@@ -354,6 +374,23 @@ public class Main {
             System.out.println("\nNo hay usuarios registrados.");
             return;
         }
+
+        //MOSTRAR INFO REDUCIDA DE LOS USUARIOS QUE HAY
+        System.out.println();
+        System.out.printf("%-5s %-25s %-35s %-10s%n",
+                "ID",
+                "NOMBRE",
+                "APELLIDO PATERNO",
+                "ACTIVO");
+        System.out.println("---------------------------------------------------------------------------------------------");
+        for (Usuario usuario : lista) {
+            System.out.printf("%-5d %-25s %-35s %-10s%n",
+                    usuario.getId(),
+                    usuario.getNombre(),
+                    usuario.getApellido_p(),
+                    usuario.isActivo() ? "SI" : "NO");
+        }
+        System.out.println();
 
         int id = 0;
 
@@ -415,8 +452,11 @@ public class Main {
             System.out.println("\nNo hay tarjetas registradas");
             return;
         }
+
+        String fecha_exp = null;
+        String tipo=null;
         System.out.println();
-        System.out.printf("%-5s %-18s %-16s %-10s %-8s %-10s %-10s %-10s%n",
+        System.out.printf("%-5s %-20s %-20s %-15s %-8s %-12s %-12s %-10s%n",
                 "ID",
                 "CLABE",
                 "NUMERO",
@@ -425,14 +465,25 @@ public class Main {
                 "SALDO",
                 "CREDITO",
                 "ACTIVO");
-        System.out.println("---------------------------------------------------------------------------------------------");
+        System.out.println("---------------------------------------------------------------------------------------------------------------------------");
         for (Tarjeta tarjeta : lista) {
-            System.out.printf("%-5d %-18s %-16s %-10s %-8s %-12.2f %-12.2f %-10s%n",
+            if (tarjeta.getMes_exp()<10){
+                fecha_exp = "0"+tarjeta.getMes_exp()+"/"+tarjeta.getAño_exp();
+            } else {
+                fecha_exp = tarjeta.getMes_exp()+"/"+tarjeta.getAño_exp();
+            }
+
+            if(tarjeta.getTipo().equals("D")){
+                tipo="Debito";
+            } else {
+                tipo="Credito";
+            }
+            System.out.printf("%-5d %-20s %-20s %-15s %-8s %-12.2f %-12.2f %-10s%n",
                     tarjeta.getId(),
                     tarjeta.getClabe(),
                     "**** **** **** " + tarjeta.getNumero().substring(tarjeta.getNumero().length() - 4),
-                    tarjeta.getMes_exp() + "/" + tarjeta.getAño_exp(),
-                    tarjeta.getTipo(),
+                    fecha_exp,
+                    tipo,
                     tarjeta.getSaldo(),
                     tarjeta.getCredito(),
                     tarjeta.isActivo() ? "SI" : "NO");
@@ -442,7 +493,7 @@ public class Main {
     public static void registrarTarjeta(Usuario usuario) {
         //Error: Cannot insert the value NULL into column 'clabe', table 'Tarjetas_POO.dbo.tarjetas'; column does not allow nulls. INSERT fails.
         //No se pudo registrar la tarjeta.
-        Tarjeta tarjeta = new Tarjeta();
+        Tarjeta tarjeta = new Tarjeta(0, null, null, 0, 0, 0, null , 0 ,true, 0, null);
 
         System.out.print("Tipo de tarjeta (D/C): ");
         String tipo = sc.nextLine().toUpperCase();
@@ -480,15 +531,37 @@ public class Main {
 
     public static void buscarTarjeta(Usuario usuario) {
         //LUEGO CHECAR ESTO PARA K SI NO HAY TARJETAS K TE REGRESE AL MENU DE INMEDIATO EN BUSCAR Y ELIMINAR
-        /*ArrayList<Tarjeta> lista = daot.listar(idUser);
+        //YA JALA ESO JEJEJ
+        ArrayList<Tarjeta> lista = daot.listar(usuario.getId());
 
         if (lista.isEmpty()) {
             System.out.println("\nNo hay tarjetas registradas");
             return;
         }
-         */
 
-        mostrarTarjetas(usuario.getId());
+        //MOSTRAR INFO REDUCIDA DE LA TARJETA
+        String tipo=null;
+        System.out.println();
+        System.out.printf("%-5s %-20s %-8s %-10s%n",
+                "ID",
+                "NUMERO",
+                "TIPO",
+                "ACTIVO");
+        System.out.println("---------------------------------------------------------------------------------------------------------------------------");
+        for (Tarjeta tarjeta : lista) {
+            if(tarjeta.getTipo().equals("D")){
+                tipo="Debito";
+            } else {
+                tipo="Credito";
+            }
+            System.out.printf("%-5d %-20s %-8s %-10s%n",
+                    tarjeta.getId(),
+                    "**** **** **** " + tarjeta.getNumero().substring(tarjeta.getNumero().length() - 4),
+                    tipo,
+                    tarjeta.isActivo() ? "SI" : "NO");
+        }
+        System.out.println();
+        //mostrarTarjetas(usuario.getId());
 
         System.out.print("\nIngrese el ID de la tarjeta: ");
         int id = Integer.parseInt(sc.nextLine());
@@ -500,11 +573,17 @@ public class Main {
             return;
         }
 
+        String fecha_exp=null;
+        if (tarjeta.getMes_exp()<10){
+            fecha_exp = "0"+tarjeta.getMes_exp()+"/"+tarjeta.getAño_exp();
+        } else {
+            fecha_exp = tarjeta.getMes_exp()+"/"+tarjeta.getAño_exp();
+        }
         System.out.println("\n========== TARJETA ==========");
         System.out.println("ID: " + tarjeta.getId());
         System.out.println("CLABE: " + tarjeta.getClabe());
         System.out.println("Número: **** **** **** " + tarjeta.getNumero().substring(tarjeta.getNumero().length()-4));
-        System.out.println("Expira: " + tarjeta.getMes_exp() + "/" + tarjeta.getAño_exp());
+        System.out.println("Expira: " + fecha_exp);
         System.out.println("Tipo: " + tarjeta.getTipo());
         System.out.println("Saldo: $" + tarjeta.getSaldo());
         System.out.println("Crédito: $" + tarjeta.getCredito());
@@ -512,7 +591,36 @@ public class Main {
     }
 
     public static void eliminarTarjeta(Usuario usuario) {
-        mostrarTarjetas(usuario.getId());
+        //mostrarTarjetas(usuario.getId());
+        ArrayList<Tarjeta> lista = daot.listar(usuario.getId());
+
+        if (lista.isEmpty()) {
+            System.out.println("\nNo hay tarjetas registradas");
+            return;
+        }
+
+        //MOSTRAR INFO REDUCIDA DE LA TARJETA
+        String tipo=null;
+        System.out.println();
+        System.out.printf("%-5s %-20s %-8s %-10s%n",
+                "ID",
+                "NUMERO",
+                "TIPO",
+                "ACTIVO");
+        System.out.println("---------------------------------------------------------------------------------------------------------------------------");
+        for (Tarjeta tarjeta : lista) {
+            if(tarjeta.getTipo().equals("D")){
+                tipo="Debito";
+            } else {
+                tipo="Credito";
+            }
+            System.out.printf("%-5d %-20s %-8s %-10s%n",
+                    tarjeta.getId(),
+                    "**** **** **** " + tarjeta.getNumero().substring(tarjeta.getNumero().length() - 4),
+                    tipo,
+                    tarjeta.isActivo() ? "SI" : "NO");
+        }
+        System.out.println();
 
         System.out.print("\nIngrese el ID de la tarjeta: ");
         int id = Integer.parseInt(sc.nextLine());
@@ -567,4 +675,81 @@ public class Main {
     }
     */
 
+    public static void editarTarjeta(Usuario usuario) {
+        //AUN NO PRUEBO ESTA FUNCION
+        ArrayList<Tarjeta> lista = daot.listar(usuario.getId());
+        if (lista.isEmpty()) {
+            System.out.println("\nNo hay tarjetas registradas");
+            return;
+        }
+
+        String tipo = null;
+        System.out.println();
+        System.out.printf("%-5s %-20s %-8s %-10s%n",
+                "ID",
+                "NUMERO",
+                "TIPO",
+                "ACTIVO");
+        System.out.println("---------------------------------------------------------------------------------------------------------------------------");
+        for (Tarjeta tarjeta : lista) {
+            if (tarjeta.getTipo().equals("D")) {
+                tipo = "Debito";
+            } else {
+                tipo = "Credito";
+            }
+            System.out.printf("%-5d %-20s %-8s %-10s%n",
+                    tarjeta.getId(),
+                    "**** **** **** " + tarjeta.getNumero().substring(tarjeta.getNumero().length() - 4),
+                    tipo,
+                    tarjeta.isActivo() ? "SI" : "NO");
+        }
+        System.out.println();
+
+        System.out.print("\nIngrese el ID de la tarjeta a desactivar/activar: ");
+        int id = Integer.parseInt(sc.nextLine());
+
+        Tarjeta tarjeta = daot.buscar(id);
+
+        if (tarjeta == null || tarjeta.getId_user() != usuario.getId()) {
+            System.out.println("Tarjeta no encontrada.");
+            return;
+        }
+
+        if (tarjeta.isActivo()) {
+            System.out.println("Desea desactivar la tarjeta?");
+            System.out.println("S/N");
+            String resp = sc.nextLine().toUpperCase();
+
+            if (resp.equals("S")) {
+                tarjeta.setActivo(false);
+                if (daot.actualizarEstado(tarjeta)) {
+                    System.out.println("Tarjeta desactivada.");
+                } else {
+                    System.out.println("No se pudo actualizar la tarjeta.");
+                }
+            } else if (resp.equals("N")) {
+                System.out.println("Operación cancelada.");
+            } else {
+                System.out.println("Opción inválida.");
+            }
+        } else {
+            System.out.println("Desea activar la tarjeta.");
+            System.out.println("S/N");
+            String resp = sc.nextLine().toUpperCase();
+
+            if (resp.equals("S")) {
+                tarjeta.setActivo(true);
+                if (daot.actualizarEstado(tarjeta)) {
+                    System.out.println("Tarjeta activada.");
+                } else {
+                    System.out.println("No se pudo actualizar la tarjeta.");
+                }
+            } else if (resp.equals("N")) {
+                System.out.println("Operación cancelada.");
+            } else {
+                System.out.println("Opción inválida.");
+
+            }
+        }
+    }
 }

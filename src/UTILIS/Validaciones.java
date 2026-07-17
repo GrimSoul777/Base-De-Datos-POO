@@ -15,4 +15,12 @@ public class Validaciones {
     public static boolean edadValida(int edad){
         return edad >= 18 && edad <= 100;
     }
+
+    public static boolean correoValido(String email) {
+        if (email == null || email.trim().isEmpty()) {
+            return false;
+        }
+
+        return email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
+    }
 }

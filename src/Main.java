@@ -51,11 +51,11 @@ public class Main {
             } catch (Exception e) {
                 System.out.println("\nDebe ingresar un número.");
             }
-            if (opcion != 6) {
+            if (opcion != 7) {
                 System.out.println("\nPresione ENTER para continuar...");
                 sc.nextLine();
             }
-        } while (opcion != 6);
+        } while (opcion != 7);
     }
 
     public static void menuPrincipal() {
@@ -628,6 +628,7 @@ public class Main {
     public static void registrarTarjeta(Usuario usuario) {
         //Error: Cannot insert the value NULL into column 'clabe', table 'Tarjetas_POO.dbo.tarjetas'; column does not allow nulls. INSERT fails.
         //No se pudo registrar la tarjeta.
+        //YA NO SALE ERROR WUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU
         Tarjeta tarjeta = new Tarjeta(0, null, null, 0, 0, 0, null , 0 ,true, 0, null);
 
         System.out.print("Tipo de tarjeta (D/C): ");

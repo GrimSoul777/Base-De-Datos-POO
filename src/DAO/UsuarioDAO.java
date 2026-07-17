@@ -113,6 +113,8 @@ public class UsuarioDAO implements InterUsuarioDAO {
                     apellido_p = ?,
                     apellido_m = ?,
                     edad = ?,
+                    email = ?,
+                    contra = ?,
                     activo = ?
                 WHERE id_user = ?
                 """;
@@ -123,8 +125,10 @@ public class UsuarioDAO implements InterUsuarioDAO {
             ps.setString(2, usuario.getApellido_p());
             ps.setString(3, usuario.getApellido_m());
             ps.setInt(4, usuario.getEdad());
-            ps.setBoolean(5, usuario.isActivo());
-            ps.setInt(6, usuario.getId());
+            ps.setString(5, usuario.getEmail());
+            ps.setString(6, usuario.getContra());
+            ps.setBoolean(7, usuario.isActivo());
+            ps.setInt(8, usuario.getId());
 
             ps.executeUpdate();
 

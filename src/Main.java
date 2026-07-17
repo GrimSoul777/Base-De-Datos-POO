@@ -786,7 +786,7 @@ public class Main {
         System.out.println("CLABE: " + tarjeta.getClabe());
         System.out.println("Número: **** **** **** " + tarjeta.getNumero().substring(tarjeta.getNumero().length()-4));
         System.out.println("Expira: " + fecha_exp);
-        System.out.println("Tipo: " + tarjeta.getTipo());
+        System.out.println("Tipo: " + tipo);
         System.out.println("Saldo: $" + tarjeta.getSaldo());
         System.out.println("Crédito: $" + tarjeta.getCredito());
         System.out.println("Activo: " + (tarjeta.isActivo() ? "SI" : "NO"));

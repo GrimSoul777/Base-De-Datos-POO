@@ -183,7 +183,7 @@ public class Main {
             System.out.println("2. Apellido paterno ");
             System.out.println("3. Apellido materno ");
             System.out.println("4. Edad ");
-            System.out.println("5. Activo (" + (usuario.isActivo() ? "SI" : "NO") + ")");
+            System.out.println("5. Estado (" + (usuario.isActivo() ? "SI" : "NO") + ")");
             System.out.println("6. Guardar cambios y salir");
             System.out.println("7. Cancelar");
             //si cancela no se guardan los datos
@@ -253,14 +253,29 @@ public class Main {
                     break;
 
                 case 5:
-                    System.out.print("¿Activar usuario? (S/N): ");
-                    String activoStr = sc.nextLine().toUpperCase();
-                    if (activoStr.equals("S")) {
-                        usuario.setActivo(true);
-                    } else if (activoStr.equals("N")) {
-                        usuario.setActivo(false);
+                    //lo de desactivar pq se me olvido xd
+                    if(usuario.isActivo()) {
+                        System.out.print("¿Desactivar usuario? (S/N): ");
+                        String activoStr = sc.nextLine().toUpperCase();
+                        if (activoStr.equals("S")) {
+                            usuario.setActivo(false);
+                            System.out.println("Estado cambiado a: Inactivo");
+                        } else if (activoStr.equals("N")) {
+                            usuario.setActivo(true);
+                        } else {
+                            System.out.println("Opción inválida.");
+                        }
                     } else {
-                        System.out.println("Opción inválida");
+                        System.out.print("¿Activar usuario? (S/N): ");
+                        String activoStr = sc.nextLine().toUpperCase();
+                        if (activoStr.equals("S")) {
+                            usuario.setActivo(true);
+                            System.out.println("Estado cambiado a: Activo");
+                        } else if (activoStr.equals("N")) {
+                            usuario.setActivo(false);
+                        } else {
+                            System.out.println("Opción inválida.");
+                        }
                     }
                     break;
 

@@ -36,10 +36,12 @@ public class Main {
                         break;
 
                     case 5:
-                        eliminarUsuario();
+                        editarUsuario();
                         break;
-
                     case 6:
+                        eliminarUsuario();
+
+                    case 7:
                         System.out.println("\nSALIENDO...");
                         break;
 
@@ -65,8 +67,9 @@ public class Main {
         System.out.println("2. Registrar usuarios");
         System.out.println("3. Buscar usuarios");
         System.out.println("4. Seleccionar usuario");
-        System.out.println("5. Eliminar usuarios");
-        System.out.println("6. Salir");
+        System.out.println("5. Editar usuario");
+        System.out.println("6. Eliminar usuarios");
+        System.out.println("7. Salir");
         System.out.println("===========================================");
         System.out.print("Seleccione una opción: ");
     }
@@ -147,6 +150,138 @@ public class Main {
             System.out.println("REGRESANDO AL MENU PRINCIPAL");
         }
 
+    }
+
+
+    public static void editarUsuario() {
+        ArrayList<Usuario> lista = dao.listar();
+        if (lista.isEmpty()) {
+            System.out.println("\nNo hay usuarios registrados.");
+            return;
+        }
+        int id;
+        try {
+            System.out.print("Ingrese el ID del usuario a editar: ");
+            id = Integer.parseInt(sc.nextLine());
+        } catch (Exception e) {
+            System.out.println("ID inválido.");
+            return;
+        }
+
+        Usuario usuario = dao.buscar(id);
+        if (usuario == null) {
+            System.out.println("Usuario no encontrado.");
+            return;
+        }
+        boolean editando = true;
+        while (editando) {
+            System.out.println("\n===========================================");
+            System.out.println("   EDITAR: " + usuario.getNombre() + " " + usuario.getApellido_p() + " " + usuario.getApellido_m());
+            System.out.println("===========================================");
+            System.out.println("\n¿Que desea editar?:");
+            System.out.println("1. Nombre ");
+            System.out.println("2. Apellido paterno ");
+            System.out.println("3. Apellido materno ");
+            System.out.println("4. Edad ");
+            System.out.println("5. Activo (" + (usuario.isActivo() ? "SI" : "NO") + ")");
+            System.out.println("6. Guardar cambios y salir");
+            System.out.println("7. Cancelar");
+            //si cancela no se guardan los datos
+            System.out.print("Seleccione el dato a editar: ");
+
+            int opcion;
+            try {
+                opcion = Integer.parseInt(sc.nextLine());
+            } catch (Exception e) {
+                System.out.println("Debe ingresar un número.");
+                continue;
+            }
+
+            switch (opcion) {
+                case 1:
+                    String nombre;
+                    do {
+                        System.out.print("Editar nombre: ");
+                        nombre = sc.nextLine();
+                        if (!Validaciones.soloLetras(nombre)) {
+                            System.out.println("El nombre solo puede contener letras.");
+                        }
+                    } while (!Validaciones.soloLetras(nombre));
+                    usuario.setNombre(nombre);
+                    break;
+
+                case 2:
+                    String apellidoP;
+                    do {
+                        System.out.print("Editar apellido paterno: ");
+                        apellidoP = sc.nextLine();
+                        if (!Validaciones.soloLetras(apellidoP)) {
+                            System.out.println("El apellido paterno solo puede contener letras.");
+                        }
+                    } while (!Validaciones.soloLetras(apellidoP));
+                    usuario.setApellido_p(apellidoP);
+                    break;
+
+                case 3:
+                    String apellidoM;
+                    do {
+                        System.out.print("Editar apellido materno: ");
+                        apellidoM = sc.nextLine();
+                        if (!Validaciones.soloLetras(apellidoM)) {
+                            System.out.println("El apellido materno solo puede contener letras.");
+                        }
+                    } while (!Validaciones.soloLetras(apellidoM));
+                    usuario.setApellido_m(apellidoM);
+                    break;
+
+                case 4:
+                    boolean edadValida = false;
+                    while (!edadValida) {
+                        try {
+                            System.out.print("Editar edad: ");
+                            int edad = Integer.parseInt(sc.nextLine());
+                            if (Validaciones.edadValida(edad)) {
+                                usuario.setEdad(edad);
+                                edadValida = true;
+                            } else {
+                                System.out.println("Edad inválida.");
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Debe ingresar un número.");
+                        }
+                    }
+                    break;
+
+                case 5:
+                    System.out.print("¿Activar usuario? (S/N): ");
+                    String activoStr = sc.nextLine().toUpperCase();
+                    if (activoStr.equals("S")) {
+                        usuario.setActivo(true);
+                    } else if (activoStr.equals("N")) {
+                        usuario.setActivo(false);
+                    } else {
+                        System.out.println("Opción inválida");
+                    }
+                    break;
+
+                case 6:
+                    if (dao.editar(usuario)) {
+                        System.out.println("\nUsuario actualizado correctamente.");
+                    } else {
+                        System.out.println("\nNo fue posible actualizar al usuario.");
+                    }
+                    editando = false;
+                    break;
+
+                case 7:
+                    System.out.println("\nEdición cancelada. No se guardaron los cambios.");
+                    editando = false;
+                    break;
+
+                default:
+                    System.out.println("Opción inválida.");
+            }
+        }
     }
 
     public static void menuTarjeta(Usuario usuario) {

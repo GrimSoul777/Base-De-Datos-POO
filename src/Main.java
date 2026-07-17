@@ -154,14 +154,31 @@ public class Main {
 
 
     public static void editarUsuario() {
+        //mostrar opciones usuario
         ArrayList<Usuario> lista = dao.listar();
         if (lista.isEmpty()) {
             System.out.println("\nNo hay usuarios registrados.");
             return;
         }
+        System.out.println();
+        System.out.printf("%-5s %-25s %-35s %-35s %-10s%n",
+                "ID",
+                "NOMBRE",
+                "APELLIDO PATERNO",
+                "APELLIDO MATERNO",
+                "ACTIVO");
+        System.out.println("-----------------------------------------------------------------------------------------------------");
+        for (Usuario u : lista) {
+            System.out.printf("%-5s %-25s %-35s %-35s %-10s%n",
+                    u.getId(),
+                    u.getNombre(),
+                    u.getApellido_p(),
+                    u.getApellido_m(),
+                    u.isActivo() ? "Si" : "No");
+        }
         int id;
         try {
-            System.out.print("Ingrese el ID del usuario a editar: ");
+            System.out.print("\nIngrese el ID del usuario a editar: ");
             id = Integer.parseInt(sc.nextLine());
         } catch (Exception e) {
             System.out.println("ID inválido.");
@@ -183,9 +200,12 @@ public class Main {
             System.out.println("2. Apellido paterno ");
             System.out.println("3. Apellido materno ");
             System.out.println("4. Edad ");
-            System.out.println("5. Estado (" + (usuario.isActivo() ? "SI" : "NO") + ")");
-            System.out.println("6. Guardar cambios y salir");
-            System.out.println("7. Cancelar");
+            System.out.println("5. Estado (" + (usuario.isActivo() ? "Activo" : "Desactivado") + ")");
+            //agregando editar contra y correo
+            System.out.println("6. Correo");
+            System.out.println("7. Contraseña");
+            System.out.println("8. Guardar cambios y salir");
+            System.out.println("9. Cancelar");
             //si cancela no se guardan los datos
             System.out.print("Seleccione el dato a editar: ");
 
@@ -280,6 +300,33 @@ public class Main {
                     break;
 
                 case 6:
+                    String email;
+                    do {
+                        System.out.print("Editar correo: ");
+                        email = sc.nextLine();
+                        if (!Validaciones.correoValido(email)) {
+                            System.out.println("Ingrese un correo valido");
+                        }
+                    } while (!Validaciones.correoValido(email));
+
+                    usuario.setEmail(email);
+                    System.out.println("Correo modificado");
+                    break;
+                case 7:
+                    String contra;
+                    do {
+                        System.out.print("Editar contraseña nueva: ");
+                        contra = sc.nextLine();
+                        if (Validaciones.estaVacio(contra)) {
+                            System.out.println("La contraseña no puede estar vacía.");
+                        }
+                    } while (Validaciones.estaVacio(contra));
+
+                    usuario.setContra(contra);
+                    System.out.println("Contraseña modificada");
+                    break;
+
+                case 8:
                     if (dao.editar(usuario)) {
                         System.out.println("\nUsuario actualizado correctamente.");
                     } else {
@@ -288,7 +335,7 @@ public class Main {
                     editando = false;
                     break;
 
-                case 7:
+                case 9:
                     System.out.println("\nEdición cancelada. No se guardaron los cambios.");
                     editando = false;
                     break;

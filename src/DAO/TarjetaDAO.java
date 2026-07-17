@@ -15,7 +15,7 @@ public class TarjetaDAO implements InterTarjetaDAO {
     public boolean guardar(Tarjeta tarjeta) {
         try {
             Connection con = Conexion.conectar();
-            String sql = "INSERT INTO tarjetas "
+            String sql = "INSERT INTO tarjetas"
                     + "(clabe, numero, mes_exp, año_exp, saldo, tipo, credito, activo, id_user) "
                     + "VALUES(?,?,?,?,?,?,?,?,?)";
 
@@ -144,7 +144,7 @@ public class TarjetaDAO implements InterTarjetaDAO {
     public boolean actualizarEstado(Tarjeta tarjeta){
         try {
             Connection con = Conexion.conectar();
-            String sql = "UPDATE tarjetas SET activo = ? WHERE id = ?";
+            String sql = "UPDATE tarjetas SET activo = ? WHERE id_tarjeta = ?";
 
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setBoolean(1, tarjeta.isActivo());

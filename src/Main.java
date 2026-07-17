@@ -195,6 +195,10 @@ public class Main {
             System.out.println("\n===========================================");
             System.out.println("   EDITAR: " + usuario.getNombre() + " " + usuario.getApellido_p() + " " + usuario.getApellido_m());
             System.out.println("===========================================");
+            System.out.println("EDAD: " + usuario.getEdad());
+            System.out.println("ACTIVO: "+(usuario.isActivo()?"Si":"No"));
+            System.out.println("CORREO: "+usuario.getEmail());
+            System.out.println("CONTRA: "+usuario.getContra());
             System.out.println("\n¿Que desea editar?:");
             System.out.println("1. Nombre ");
             System.out.println("2. Apellido paterno ");
